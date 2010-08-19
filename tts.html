@@ -1,0 +1,60 @@
+<html>
+<head><title>TTS - Text-To-Speech</title></head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script>
+<!--
+/* Made by Han Lin Yap
+ * 2010-02-27
+ */
+$(document).ready(function() {
+	$("#put").click(function() {
+		var items = $("#tts").val().split(/[.,?]|(.*){0,100}/);
+		
+		for (var i in items) {
+			if (items[i] != "\n" && items[i] != "") {
+				$("#queue ul").append("<li><a class='read'>Read</a> " + items[i] + "</li>");
+			}
+		}
+	
+		return false;
+	});
+	
+	$("audio").bind('ended', function () {
+		setTimeout('$(".read:first").trigger("click")',1000);
+	});
+	
+	function read() {
+		var video = document.getElementsByTagName('audio')[0];
+		var read = $(this).parent().text().substring(4);
+		video.setAttribute('src',"http://translate.google.com/translate_tts?tl=en&q=" + read);
+		video.load();
+		video.play();
+
+		$("#nowread").text(read);
+		$(this).parent().remove();
+		
+		return false;
+	}
+	
+	$(".read").live('click',read);
+	$("#autoread").click(function () {
+		$(".read:first").trigger("click");
+	});
+	
+});
+
+
+-->
+</script>
+<body>
+<textarea id="tts" cols="60" rows="15"></textarea>
+<a id="put" href="#">Put to queue</a>
+<a id="autoread" href="#">Auto Read</a>
+<div id="queue">
+	<ul>
+	</ul>
+</div>
+<div id="nowread"></div>
+<audio controls="" autoplay="" name="media" src=""></audio>
+</body>
+</html>
